@@ -1,0 +1,318 @@
+# if true, will delete all the PVs and PVCs, created by StatefulSets, during helm uninstall
+deletePersistentVolumes: true
+# if exists - tries to install license, specified by parameter
+license: '{"licenseData": "ETw4yCLJiszwXvTH/T/OMGhErx0N0e/TWrS03B7sOI2fjtzt3xpeJeK0IC9GCE8j5d/6o0Ci4aDiLrIbbI68KEqsUz5aVxsgw/gZ9uhgK+ExOKY/CAouVPRqurZsgn/aNsWZS2sMfT9l44pqXC3XwM4jbuV8JNGueHfZy44XN/lgdDxyOsa8KlSAqUUHf0Wqdg+YVqDZSQd3JwI2hsotCQ1QrPtdIBFwWAvuZ/y5wHRy6+mtxcFqPOWW1Z/mlYSy6x5BRD2WqgBGdQSxMjGD/+mqtRy7qOx8P2X/0lM6usWG32IaBXapO20x9gVOk2Hxguzm8VGictkPIAaPx6kduA==", "licenseDetailsData": "{\"description\":\"Non-gating license key for on-premise production usage\"}"}'
+# required - sets the registry for this chart's images. Does not have default value.
+# imageRegistry:
+
+# if set, used as value of imagePullSecrets directive for all images pulled from imageRegistry
+# imagePullSecretName:
+
+# StatefulSets params
+common:
+  mysqldb:
+    database: pliant
+    image:
+      pullPolicy: IfNotPresent
+      pullSecretName: "{{ .Values.imagePullSecretName }}"
+      registry: "{{ .Values.imageRegistry | required `.Values.imageRegistry is required!` }}"
+      repository: infra-mysql-master
+      tag: v8.0.36007
+    replicas: 1
+  object_storage:
+    image:
+      pullPolicy: IfNotPresent
+      pullSecretName: "{{ .Values.imagePullSecretName }}"
+      registry: "{{ .Values.imageRegistry | required `.Values.imageRegistry is required!` }}"
+      repository: infra-minio-master
+      tag: v2024.4.18006
+    replicas: 1
+    resources:
+      requests:
+        storage: "2Gi"
+  pliant_kv_store:
+    image:
+      pullPolicy: IfNotPresent
+      pullSecretName: "{{ .Values.imagePullSecretName }}"
+      registry: "{{ .Values.imageRegistry | required `.Values.imageRegistry is required!` }}"
+      repository: infra-redis-master
+      tag: v6.2.14004
+    replicas: 1
+  pliant_stats:
+    env:
+      INFLUXDB_HTTP_AUTH_ENABLED: "true"
+    image:
+      pullPolicy: IfNotPresent
+      pullSecretName: "{{ .Values.imagePullSecretName }}"
+      registry: "{{ .Values.imageRegistry | required `.Values.imageRegistry is required!` }}"
+      repository: infra-influxdb-master
+      tag: v1.8.10006
+    replicas: 1
+  rabbitmq:
+    image:
+      pullPolicy: IfNotPresent
+      pullSecretName: "{{ .Values.imagePullSecretName }}"
+      registry: "{{ .Values.imageRegistry | required `.Values.imageRegistry is required!` }}"
+      repository: infra-rabbitmq-master
+      tag: v3.13.5
+    replicas: 1
+# Deployments params
+rna:
+  addon_ansible:
+    image:
+      pullPolicy: IfNotPresent
+      pullSecretName: "{{ .Values.imagePullSecretName }}"
+      registry: "{{ .Values.imageRegistry | required `.Values.imageRegistry is required!` }}"
+      repository: addon-ansible-master
+      tag: v1.19.0
+    replicas: 1
+  addon_faas:
+    env:
+      # PIP_INDEX_URL: "..."
+      # PIP_TRUSTED_HOST: "..."
+      # PIP_PROXY: "..."
+      # EXTRACT_DEPENDENCIES_PYTHON_OPTIONS: "..."
+      IMAGE_PULL_POLICY: "IfNotPresent"
+    image:
+      pullPolicy: IfNotPresent
+      pullSecretName: "{{ .Values.imagePullSecretName }}"
+      registry: "{{ .Values.imageRegistry | required `.Values.imageRegistry is required!` }}"
+      repository: addon-faas-master
+      tag: v1.12.0
+    replicas: 1
+  addon_mqws:
+    image:
+      pullPolicy: IfNotPresent
+      pullSecretName: "{{ .Values.imagePullSecretName }}"
+      registry: "{{ .Values.imageRegistry | required `.Values.imageRegistry is required!` }}"
+      repository: addon-mqws-master
+      tag: v1.12.0
+    replicas: 1
+  addon_napalm:
+    image:
+      pullPolicy: IfNotPresent
+      pullSecretName: "{{ .Values.imagePullSecretName }}"
+      registry: "{{ .Values.imageRegistry | required `.Values.imageRegistry is required!` }}"
+      repository: addon-napalm-master
+      tag: v3.9.0
+    replicas: 1
+  addon_textfsm:
+    image:
+      pullPolicy: IfNotPresent
+      pullSecretName: "{{ .Values.imagePullSecretName }}"
+      registry: "{{ .Values.imageRegistry | required `.Values.imageRegistry is required!` }}"
+      repository: addon-textfsm-master
+      tag: v1.11.0
+    replicas: 1
+  addon_pdf:
+    image:
+      pullPolicy: IfNotPresent
+      pullSecretName: "{{ .Values.imagePullSecretName }}"
+      registry: "{{ .Values.imageRegistry | required `.Values.imageRegistry is required!` }}"
+      repository: addon-pdf-master
+      tag: v1.7.0
+    replicas: 1
+  addon_themes:
+    image:
+      pullPolicy: IfNotPresent
+      pullSecretName: "{{ .Values.imagePullSecretName }}"
+      registry: "{{ .Values.imageRegistry | required `.Values.imageRegistry is required!` }}"
+      repository: addon-themes-master
+      tag: v1.76.0
+    replicas: 1
+  addon_toolbox:
+    image:
+      pullPolicy: IfNotPresent
+      pullSecretName: "{{ .Values.imagePullSecretName }}"
+      registry: "{{ .Values.imageRegistry | required `.Values.imageRegistry is required!` }}"
+      repository: addon-toolbox-master
+      tag: v0.3.0
+    replicas: 0
+  pliant_api_radius:
+    image:
+      pullPolicy: IfNotPresent
+      pullSecretName: "{{ .Values.imagePullSecretName }}"
+      registry: "{{ .Values.imageRegistry | required `.Values.imageRegistry is required!` }}"
+      repository: pliant-api-radius-master
+      tag: v1.16.0
+  pliant_api:
+    env:
+      ALLOW_IMPORT_OF_LEGACY_INTEGRATIONS: "false"
+    image:
+      pullPolicy: IfNotPresent
+      pullSecretName: "{{ .Values.imagePullSecretName }}"
+      registry: "{{ .Values.imageRegistry | required `.Values.imageRegistry is required!` }}"
+      repository: pliant-api-master
+      tag: v1.166.2
+    replicas: 2
+  pliant_app_gateway:
+    image:
+      pullPolicy: IfNotPresent
+      pullSecretName: "{{ .Values.imagePullSecretName }}"
+      registry: "{{ .Values.imageRegistry | required `.Values.imageRegistry is required!` }}"
+      repository: pliant-app-gateway-master
+      tag: v1.27.0
+    replicas: 1
+  pliant_compiler:
+    image:
+      pullPolicy: IfNotPresent
+      pullSecretName: "{{ .Values.imagePullSecretName }}"
+      registry: "{{ .Values.imageRegistry | required `.Values.imageRegistry is required!` }}"
+      repository: pliant-compiler-master
+      tag: v1.29.1
+    replicas: 1
+  pliant_db_migration:
+    image:
+      pullPolicy: IfNotPresent
+      pullSecretName: "{{ .Values.imagePullSecretName }}"
+      registry: "{{ .Values.imageRegistry | required `.Values.imageRegistry is required!` }}"
+      repository: pliant-db-migration-master
+      tag: v1.43.0
+    replicas: 1
+  pliant_faas_image_builder:
+    image:
+      registry: "{{ .Values.imageRegistry | required `.Values.imageRegistry is required!` }}"
+      repository: pliant-faas-image-builder-master
+      tag: v1.6.0
+  pliant_flow_converter:
+    image:
+      pullPolicy: IfNotPresent
+      pullSecretName: "{{ .Values.imagePullSecretName }}"
+      registry: "{{ .Values.imageRegistry | required `.Values.imageRegistry is required!` }}"
+      repository: pliant-flow-converter-master
+      tag: v1.30.2
+    replicas: 1
+  pliant_front:
+    image:
+      pullPolicy: IfNotPresent
+      pullSecretName: "{{ .Values.imagePullSecretName }}"
+      registry: "{{ .Values.imageRegistry | required `.Values.imageRegistry is required!` }}"
+      repository: pliant-front-master
+      tag: v2.18.2
+    replicas: 2
+  pliant_image_registry:
+    env:
+      CLEANUP_STORAGE_THRESHOLD_GB: "7"
+    image:
+      pullPolicy: IfNotPresent
+      pullSecretName: "{{ .Values.imagePullSecretName }}"
+      registry: "{{ .Values.imageRegistry | required `.Values.imageRegistry is required!` }}"
+      repository: pliant-image-registry-master
+      tag: v2.8.3007
+    replicas: 1
+    storage:
+      size: "10Gi"
+  pliant_proxy:
+    image:
+      pullPolicy: IfNotPresent
+      pullSecretName: "{{ .Values.imagePullSecretName }}"
+      registry: "{{ .Values.imageRegistry | required `.Values.imageRegistry is required!` }}"
+      repository: pliant-proxy-master
+      tag: v1.36.0
+    replicas: 1
+  pliant_python_pipreqs:
+    image:
+      registry: "{{ .Values.imageRegistry | required `.Values.imageRegistry is required!` }}"
+      repository: pliant-python-pipreqs-master
+      tag: v1.7.0
+  pliant_scheduler:
+    image:
+      pullPolicy: IfNotPresent
+      pullSecretName: "{{ .Values.imagePullSecretName }}"
+      registry: "{{ .Values.imageRegistry | required `.Values.imageRegistry is required!` }}"
+      repository: pliant-scheduler-master
+      tag: v1.25.0
+    replicas: 1
+  pliant_versioning:
+    image:
+      pullPolicy: IfNotPresent
+      pullSecretName: "{{ .Values.imagePullSecretName }}"
+      registry: "{{ .Values.imageRegistry | required `.Values.imageRegistry is required!` }}"
+      repository: pliant-versioning-master
+      tag: v1.25.0
+  pliant_worker_nodejs_config:
+    env:
+      ALLOW_IMPORT_OF_LEGACY_INTEGRATIONS: "false"
+      DEPENDENCIES_UPSTREAM_ALLOWED: "false"
+    image:
+      pullPolicy: IfNotPresent
+      pullSecretName: "{{ .Values.imagePullSecretName }}"
+      registry: "{{ .Values.imageRegistry | required `.Values.imageRegistry is required!` }}"
+      repository: pliant-worker-nodejs-config-master
+      tag: v1.31.1
+    replicas: 1
+  pliant_worker_nodejs_remote:
+    image:
+      pullPolicy: IfNotPresent
+      pullSecretName: "{{ .Values.imagePullSecretName }}"
+      registry: "{{ .Values.imageRegistry | required `.Values.imageRegistry is required!` }}"
+      repository: pliant-worker-nodejs-remote-master
+      tag: v1.55.0
+    replicas: 0
+  pliant_worker_nodejs:
+    image:
+      pullPolicy: IfNotPresent
+      pullSecretName: "{{ .Values.imagePullSecretName }}"
+      registry: "{{ .Values.imageRegistry | required `.Values.imageRegistry is required!` }}"
+      repository: pliant-worker-nodejs-master
+      tag: v1.122.2
+    replicas: 2
+  rna_utils:
+    image:
+      pullPolicy: IfNotPresent
+      pullSecretName: "{{ .Values.imagePullSecretName }}"
+      registry: "{{ .Values.imageRegistry | required `.Values.imageRegistry is required!` }}"
+      repository: rna-utils-master
+      tag: v1.11.4_2024.2.523
+  instance:
+    # admin_password: "..."
+    # scheduler_password: "..."
+    # worker_group_secret_key: "..."
+    address: "" # required; sets the host address (with https:// protocol prefix) of this instance, ex. "https://my.host.com". Mandatory if external certificate is set - certificate must match the hostname part of the address
+    worker_group_name: default
+  faas:
+    faas_namespace: "faas"
+    python:
+      # pip_registry: "http://192.168.0.1:5000/root/pypi/" # ends with slash, this is the "simple" index url
+      # pip_proxy: "http://192.168.0.2:8080" # does not end with slash
+      pip_ignore_ssl_errors: false
+  certificates:
+    tls:
+      autogen:
+        cn: "rna.local"
+        daysValid: 1826
+      # explicitly set TLS certificate and key in plain PEM format or Base64 encoded PEM; if both set, these values override existing TLS cert
+      cert: "" # ex. "-----BEGIN CERTIFICATE-----\n..."
+      key: "" # ex. "-----BEGIN PRIVATE KEY-----\n..."
+VERSIONS_MANIFEST:
+  - addon-ansible:1.19.0
+  - addon-faas:1.12.0
+  - addon-mqws:1.12.0
+  - addon-napalm:3.9.0
+  - addon-pdf:1.7.0
+  - addon-textfsm:1.11.0
+  - addon-themes:1.76.0
+  - addon-toolbox:0.3.0
+  - infra-influxdb:1.8.10006
+  - infra-minio:2024.4.18006
+  - infra-mysql:8.0.36007
+  - infra-rabbitmq:3.13.5
+  - infra-redis:6.2.14004
+  - pliant-api-radius:1.16.0
+  - pliant-api:1.166.2
+  - pliant-app-gateway:1.27.0
+  - pliant-compiler:1.29.1
+  - pliant-db-migration:1.43.0
+  - pliant-faas-image-builder:1.6.0
+  - pliant-flow-converter:1.30.2
+  - pliant-front:2.18.2
+  - pliant-image-registry:2.8.3007
+  - pliant-integrations:2.151.0
+  - pliant-proxy:1.36.0
+  - pliant-python-pipreqs:1.7.0
+  - pliant-scheduler:1.25.0
+  - pliant-versioning:1.25.0
+  - pliant-worker-nodejs-config:1.31.1
+  - pliant-worker-nodejs-remote:1.55.0
+  - pliant-worker-nodejs:1.122.2
+  - platform-version:2024.2.523
