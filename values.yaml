@@ -1,5 +1,5 @@
 deletePersistentVolumes: true
-license: "{\"licenseData\": \"ETw4yCLJiszwXvTH/T/OMGhErx0N0e/TWrS03B7sOI2fjtzt3xpeJeK0IC9GCE8j5d/6o0Ci4aDiLrIbbI68KEqsUz5aVxsgw/gZ9uhgK+ExOKY/CAouVPRqurZsgn/aNsWZS2sMfT9l44pqXC3XwM4jbuV8JNGueHfZy44XN/lgdDxyOsa8KlSAqUUHf0Wqdg+YVqDZSQd3JwI2hsotCQ1QrPtdIBFwWAvuZ/y5wHRy6+mtxcFqPOWW1Z/mlYSy6x5BRD2WqgBGdQSxMjGD/+mqtRy7qOx8P2X/0lM6usWG32IaBXapO20x9gVOk2Hxguzm8VGictkPIAaPx6kduA==\", \"licenseDetailsData\": \"{\\\"description\\\":\\\"Non-gating license key for on-premise production usage\\\"}\"}"
+license: "{\"licenseData\": \"xxxxxxxzx\", \"licenseDetailsData\": \"{\\\"description\\\":\\\"Non-gating license key for on-premise production usage\\\"}\"}"
 common:
   mysqldb:
     database: "pliant"
