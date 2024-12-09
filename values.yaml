@@ -256,6 +256,9 @@ rna:
       registry: "{{ .Values.imageRegistry | required `.Values.imageRegistry is required!` }}"
       repository: pliant-worker-nodejs-master
       tag: v1.122.2
+    resources:
+      requests:
+        memory: "11250Mi"
     replicas: 2
   rna_utils:
     image:
