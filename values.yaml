@@ -235,6 +235,9 @@ rna:
       repository: "pliant-worker-nodejs-remote-master"
       tag: "v1.55.0"
     replicas: 0
+    resources:
+      requests:
+        memory: "1150Mi"
   pliant_worker_nodejs:
     image:
       pullPolicy: "IfNotPresent"
