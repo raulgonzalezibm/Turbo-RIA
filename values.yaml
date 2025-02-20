@@ -237,7 +237,7 @@ rna:
     replicas: 0
     resources:
       requests:
-        memory: "1150Mi"
+        memory: "650Mi"
   pliant_worker_nodejs:
     image:
       pullPolicy: "IfNotPresent"
