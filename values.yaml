@@ -251,7 +251,9 @@ rna:
       tag: "v1.122.2"
     resources:
       requests:
-        memory: "1150Mi"
+        memory: "512Mi"
+      limits:
+        memory: "1000Mi"
     replicas: 2
   rna_utils:
     image:
