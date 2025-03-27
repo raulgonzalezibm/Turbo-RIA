@@ -237,7 +237,7 @@ rna:
     replicas: 0
     resources:
       requests:
-        memory: "256Mi"
+        memory: "255Mi"
         cpu: "250m"
       limits:
         memory: "1130Mi"
