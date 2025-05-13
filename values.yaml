@@ -254,7 +254,7 @@ rna:
         memory: "512Mi"
         cpu: "250m"
       limits:
-        memory: "1000Mi"
+        memory: "1130Mi"
         cpu: "500m"
     replicas: 1
   rna_utils:
