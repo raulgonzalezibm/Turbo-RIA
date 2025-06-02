@@ -30,11 +30,11 @@ resource "kubernetes_deployment" "test-deploy" {
           resources {
             limits = {
               cpu    = "5m"
-              memory = "300Mi"
+              memory = "100Mi"
             }
             requests = {
               cpu    = "1m"
-              memory = "250Mi"
+              memory = "50Mi"
             }
           }
         }
